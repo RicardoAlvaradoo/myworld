@@ -5,33 +5,37 @@ from http.client import HTTPResponse
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from .models import Members
+from .models import Members, Order
 
 # Create your views here.
 def index(request):
-    mymembers = Members.objects.all().values()
+    myOrders = Order.objects.all().values()
     template = loader.get_template('index.html')
     context = {
-        'mymembers' : mymembers,
+        'myOrders' : myOrders,
     }
     
     
 
     return HttpResponse(template.render(context, request))
+## Session Maker
+
 def add(request):
     template = loader.get_template('add.html')
     return HttpResponse(template.render({}, request))
 
 def addrecord(request):
-    x = request.POST['first']
-    y = request.POST['last']
-    member = Members(firstname=x, lastname=y)
-    member.save()
+    x = request.POST['title']
+    y = request.POST['descrip']
+    xy = request.POST['date']
+    z = request.POST['price']
+    order = Order(title=x, descrip=y, created=xy, price=z)
+    order.save()
     return HttpResponseRedirect(reverse('index'))
 
 def delete(request, id):
-    member = Members.objects.get(id = id)
-    member.delete()
+    order = Order.objects.get(id = id)
+    order.delete()
     return HttpResponseRedirect(reverse('index'))
 def update(request, id):
     mymember = Members.objects.get(id = id)

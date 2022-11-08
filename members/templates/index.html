@@ -1,16 +1,19 @@
-<h1> Members</h1>
+<h1> Orders</h1>
 <table border = "1">
-    {% for x in mymembers %}
+    {% for x in myOrders %}
     <tr> 
     <td><a href = "update/{{x.id}}">{{x.id}}</a></td>
    
-    <td>{{x.firstname}}</td>
-    <td> {{x.lastname}}</td>
+    <td>{{x.title}}</td>
+    <td> {{x.descrip}}</td>
+    <td> {{x.created}}</td>
+    <td> {{x.price}}</td>
+
     <td><a href = "delete/{{x.id}}">delete</a></td>
     </tr>
     {% endfor %} 
 </table>
 
 <p>
-<a href = "add/"> Add member</a>
+<a href = "add/"> Add Order</a>
 </p>
