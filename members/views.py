@@ -6,6 +6,11 @@ from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .models import Members, Order
+from django.contrib.auth import authenticate, login
+from django.shortcuts import  render, redirect
+from .forms import NewUserForm
+from django.contrib.auth import login
+from django.contrib import messages
 
 # Create your views here.
 def index(request):
@@ -54,4 +59,15 @@ def updaterecord(request, id):
     member.save()
     return HttpResponseRedirect(reverse('index'))
 
-
+#register
+def register_request(request):
+	if request.method == "POST":
+		form = NewUserForm(request.POST)
+		if form.is_valid():
+			user = form.save()
+			login(request, user)
+			messages.success(request, "Registration successful." )
+			return redirect("base.html")
+		messages.error(request, "Unsuccessful registration. Invalid information.")
+	form = NewUserForm()
+	return render (request=request, template_name="register.html", context={"register_form":form})
